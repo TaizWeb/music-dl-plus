@@ -5,9 +5,11 @@ import tkinter as tk
 interface = tk.Tk()
 formats = ["ogg", "opus", "mp3", "wav", "flac"]
 
-class StartText:
-
-	def create(self):
+class MusicDL(tk.Frame):
+	def __init__(self):
+		self.createStartup()
+	
+	def createStartup(self):
 		# Creating elements
 		self.openingText = tk.Label(text="Welcome to music-dl, a tool built on youtube-dl!")
 		self.downloadButton = tk.Button(interface, text="Download")
@@ -21,24 +23,29 @@ class StartText:
 		self.quitButton.grid(column=0, row=3)
 
 		# Binding to functions
-		self.infoButton.bind("<Button-1>", info)
+		self.infoButton.bind("<Button-1>", self.createInfo)
 		self.quitButton.bind("<Button-1>", quit)
 
-	def clear(self):
+	def clearStartup(self):
 		self.openingText.destroy()
 		self.downloadButton.destroy()
 		self.infoButton.destroy()
 		self.quitButton.destroy()
+	
+	def createInfo(self, event):
+		self.clearStartup()
+		rawInfo = "\nIn order to run music-dl, you need the following installed at their LATEST version:\nPython 3.6+: Can be installed from your systems package manager or from python.org, run python -v to check your installed version\nyoutube-dl: Installed with 'pip install youtube-dl', can be upgraded with 'pip install --upgrade youtube-dl'\nffmpeg: Installed/upgraded with your system's package manager. Debian-based users can run 'sudo apt install ffmpeg'"
+		self.infoText = tk.Label(text=rawInfo).grid(column=0, row=0)
+		self.backButton = tk.Button(interface, text="Back").grid(column=0, row=1)
+		self.backButton.bind("<Button-1>", self.back)
+	
+	def clearInfo(self):
+		self.infoText.destroy()
+		self.backButton.destroy()
 
-def info(event):
-	startup.clear()
-	infoText = tk.Label(text="This is some info")
+	def quit(event):
+		interface.quit()
 
-def quit(event):
-	interface.quit()
-
-startup = StartText()
-startup.create()
-
+app = MusicDL()
 interface.mainloop()
 
