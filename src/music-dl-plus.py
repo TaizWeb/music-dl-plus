@@ -1,9 +1,10 @@
 import subprocess
 import os
 import tkinter as tk
+from tkinter import filedialog
 
 interface = tk.Tk()
-formats = ["ogg", "opus", "mp3", "wav", "flac"]
+formats = {"ogg", "opus", "mp3", "wav", "flac"}
 
 class MusicDL(tk.Frame):
 	def __init__(self):
@@ -50,9 +51,11 @@ class MusicDL(tk.Frame):
 	def backInfo(self, event):
 		self.clearInfo()
 		self.createStartup()
-	
+
 	def createDownload(self, event):
 		self.clearStartup()
+		defaultFormat = tk.StringVar()
+		defaultFormat.set("Desired format:")
 
 		# Download URL label
 		self.downloadLabel = tk.Label(text="Enter YouTube URL: ")
@@ -62,19 +65,27 @@ class MusicDL(tk.Frame):
 		self.downloadLink = tk.Entry(interface, text="Enter YouTube URL...")
 		self.downloadLink.grid(column=1, row=0)
 
+		# Location info
+		# self.locationInfo = tk.Label(text="Note: If custom location is left unset, music-dl will leave the album folder in src/ (with the python file)")
+		# self.locationInfo.grid(column=0, row=1)
+
 		# Download location button
-		self.downloadLocation = tk.Button(interface, text="Select location")
-		self.downloadLocation.grid(column=0, row=1)
+		self.downloadLocation = tk.Button(interface, text="Custom Location")
+		self.downloadLocation.grid(column=0, row=2)
 		self.downloadLocation.bind("<Button-1>", self.chooseFolder)
+
+		# Format dropdown
+		self.formatDropdown = tk.OptionMenu(interface, defaultFormat, *formats)
+		self.formatDropdown.grid(column=1, row=2)
 		
 		# Confirmation button
 		self.confirmationButton = tk.Button(interface, text="Get Album")
-		self.confirmationButton.grid(column=0, row=2)
+		self.confirmationButton.grid(column=0, row=3)
 		self.confirmationButton.bind("<Button-1>", self.downloadAlbum)
 	
 	def chooseFolder(self, event):
-		pass
-	
+		filedialog.askdirectory()
+
 	def downloadAlbum(self, event):
 		print(self.downloadLink.get())
 
