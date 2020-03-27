@@ -35,13 +35,20 @@ class MusicDL(tk.Frame):
 	def createInfo(self, event):
 		self.clearStartup()
 		rawInfo = "\nIn order to run music-dl, you need the following installed at their LATEST version:\nPython 3.6+: Can be installed from your systems package manager or from python.org, run python -v to check your installed version\nyoutube-dl: Installed with 'pip install youtube-dl', can be upgraded with 'pip install --upgrade youtube-dl'\nffmpeg: Installed/upgraded with your system's package manager. Debian-based users can run 'sudo apt install ffmpeg'"
-		self.infoText = tk.Label(text=rawInfo).grid(column=0, row=0)
-		self.backButton = tk.Button(interface, text="Back").grid(column=0, row=1)
-		self.backButton.bind("<Button-1>", self.back)
+		self.infoText = tk.Label(text=rawInfo)
+		self.infoText.grid(column=0, row=0)
+
+		self.backButton = tk.Button(interface, text="Back")
+		self.backButton.grid(column=0, row=1)
+		self.backButton.bind("<Button-1>", self.backInfo)
 	
 	def clearInfo(self):
 		self.infoText.destroy()
 		self.backButton.destroy()
+	
+	def backInfo(self, event):
+		self.clearInfo()
+		self.createStartup()
 
 	def quit(event):
 		interface.quit()
