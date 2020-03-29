@@ -1,5 +1,6 @@
 import subprocess
 import os
+import time
 import tkinter as tk
 from tkinter import filedialog
 
@@ -81,13 +82,32 @@ class MusicDL(tk.Frame):
 		# Confirmation button
 		self.confirmationButton = tk.Button(interface, text="Get Album")
 		self.confirmationButton.grid(column=0, row=3)
-		self.confirmationButton.bind("<Button-1>", self.downloadAlbum)
+		self.confirmationButton.bind("<Button-1>", self.createDownloadProgress)
+	
+	def clearDownload(self):
+		self.downloadLabel.destroy()
+		self.downloadLink.destroy()
+		self.downloadLocation.destroy()
+		self.formatDropdown.destroy()
+		self.confirmationButton.destroy()
 	
 	def chooseFolder(self, event):
 		filedialog.askdirectory()
 
-	def downloadAlbum(self, event):
-		print(self.downloadLink.get())
+	def createDownloadProgress(self, event):
+		albumLink = self.downloadLink.get()
+		if (albumLink != ""):
+			self.clearDownload()
+			self.downloadLabel = tk.Label(text="Downloading...")
+			self.progress = tk.Progressbar(self, orient="horizontal", length=200, mode="determinate")
+			self.progress["value"] = 0
+			self.progress["maximum"] = 10 # change later
+			for i in range(10):
+				self.progress["value"] = i
+				time.sleep(5)
+		else:
+			print("Download link empty!")
+			# Make dialog box
 
 	def quit(event):
 		interface.quit()
