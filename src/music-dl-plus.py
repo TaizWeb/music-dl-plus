@@ -3,6 +3,7 @@ import os
 import time
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import ttk
 
 interface = tk.Tk()
 formats = {"ogg", "opus", "mp3", "wav", "flac"}
@@ -99,12 +100,11 @@ class MusicDL(tk.Frame):
 		if (albumLink != ""):
 			self.clearDownload()
 			self.downloadLabel = tk.Label(text="Downloading...")
-			self.progress = tk.Progressbar(self, orient="horizontal", length=200, mode="determinate")
+			# Lesson learned: ttk is dumb and requires the root passed instead of self
+			self.progress = ttk.Progressbar(interface, orient="horizontal", length=200, mode="determinate")
+			self.progress.pack()
 			self.progress["value"] = 0
 			self.progress["maximum"] = 10 # change later
-			for i in range(10):
-				self.progress["value"] = i
-				time.sleep(5)
 		else:
 			print("Download link empty!")
 			# Make dialog box
